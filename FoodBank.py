@@ -82,8 +82,12 @@ def foodbankInfo():
     else:
         foodbanks = FoodBank.query.order_by(FoodBank.date_created).all()
         return render_template('regUser.html', foodbanks = foodbanks)
-
-            
-
+@app.route('/query_by_zip', methods = ['GET'])
+def findfoodbanksnearyou():
+    if(request.method == 'GET'):
+        foodbank_zipcode = request.args.get('zipcode')
+        foodbanks = FoodBank.query.filter_by(zipcode=foodbank_zipcode).all()
+        return render_template('regUser.html', foodbanks = foodbanks)
+        
 if __name__ == "__main__":
     app.run(debug=True) 
