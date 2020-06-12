@@ -65,7 +65,7 @@ def update(id):
     else:
         return render_template('update.html', foodbank=foodbank_to_update)
 
-@app.route('/', methods = ['POST','GET'])
+@app.route('/regUser', methods = ['POST','GET'])
 def foodbankInfo():
     if(request.method == 'POST'):
         foodbank_name = request.form['name']
@@ -76,7 +76,7 @@ def foodbankInfo():
         try:
             db.session.add(new_foodbank)
             db.session.commit()
-            return redirect('/')
+            return redirect('/regUser')
         except:
             return 'There was an error adding the foodbank'
     else:
@@ -88,6 +88,10 @@ def findfoodbanksnearyou():
         foodbank_zipcode = request.args.get('zipcode')
         foodbanks = FoodBank.query.filter_by(zipcode=foodbank_zipcode).all()
         return render_template('regUser.html', foodbanks = foodbanks)
+
+@app.route('/', methods = ['GET'])
+def homepage():
+    return render_template('HomePage.html')
         
 if __name__ == "__main__":
     app.run(debug=True) 
