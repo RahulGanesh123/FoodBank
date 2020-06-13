@@ -1,11 +1,22 @@
 from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
+from  whitenoise import WhiteNoise
 from datetime import datetime
 
 
 app = Flask(__name__)
+app.wsgi_app = WhiteNoise(app.wsgi_app, root='templates/')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
+my_static_folders = (
+    'templates/css/',
+    'templates/img/',
+    'templates/scss/',
+    'templates/vendor/bootstrap/',
+    'templates/vendor/jquery/'
+)
+for static in my_static_folders:
+    app.wsgi_app.add_files(static)
 
 
 class FoodBank(db.Model):
